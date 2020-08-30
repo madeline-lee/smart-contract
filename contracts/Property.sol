@@ -12,7 +12,6 @@ contract Property{
     //Store houses
     //Fetch houses
     mapping(uint => PropertyDetails) public properties;
-    mapping(uint => address) public propOwnerChange;
     mapping(address => bool) public users;
     //Store house count
     uint public propertyCount;
@@ -44,14 +43,14 @@ contract Property{
     function changeOwnership(uint _propId, address _newOwner) public {
         require(properties[_propId].currOwner != _newOwner);
 		require(properties[_propId].status == Status.Pending);
-		propOwnerChange[_propId] = _newOwner;
+		properties[_propId].currOwner = _newOwner;
         properties[_propId].status = Status.Sold;
     }
 
     //C. GET property details of an address
     function getProperty(uint _currOwner) public view returns (uint) {
         require(properties[_currOwner].status == Status.Pending);
-        return (properties[_currOwner]);
+        return (properties[_currOwner].value);
     }
     
     //D.GET property details using ID and address
